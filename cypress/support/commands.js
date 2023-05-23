@@ -7,7 +7,27 @@
 // commands please read more here:
 // https://on.cypress.io/custom-commands
 // ***********************************************
-//
+Cypress.Commands.add("Checkout",(input) => {
+cy.get('h4.card-title').each(($el,index,$list) =>
+{
+    if($el.text().includes(input))
+    {
+        cy.get('button.btn.btn-info').eq(index).click()
+    }
+})
+})
+
+Cypress.Commands.add("hittingLoginAPI",()=>
+{
+    cy.request("POST","https://rahulshettyacademy.com/api/ecom/auth/login",
+    {userEmail: "test@demo.com", userPassword: "Test@123"}).
+    then(function(response)
+    {
+        expect(response.status).to.equal(200)
+        Cypress.env('token',response.body.token)
+    })
+})
+
 //
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
